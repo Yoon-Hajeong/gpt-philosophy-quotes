@@ -1,11 +1,14 @@
 
-from datetime import datetime
-import json
+
+import asyncio
+
 from fastapi import FastAPI, HTTPException, Cookie, APIRouter
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import Optional
+from datetime import datetime
+import json
 
 import httpx
 import requests
@@ -86,9 +89,13 @@ async def 전체사용자목록():
 
 # ================== GPT 명언 기능 영역 ==================
 gpt_router = APIRouter()
+import asyncio  # 맨 위에 추가
+
 @gpt_router.post("/save-quote")
-def save_quote(nickname: str, mood: str):
-    # GPT에 보낼 메시지 구성
+async def save_quote(nickname: str, mood: str):
+    # ✅ 딜레이 시작
+    await asyncio.sleep(600)  # 10분 = 600초
+
     messages = [
         {
             "role": "system",
@@ -100,15 +107,15 @@ def save_quote(nickname: str, mood: str):
         }
     ]
 
-    # GPT API 요청
-    response = requests.post(
-        "https://dev.wenivops.co.kr/services/openai-api",
-        json=messages
-    )
-    result = response.json()
-    quote = result["choices"][0]["message"]["content"]
+    async with httpx.AsyncClient() as client:
+        response = await client.post(
+            "https://dev.wenivops.co.kr/services/openai-api",
+            json=messages,
+            timeout=30.0
+        )
+        result = response.json()
+        quote = result["choices"][0]["message"]["content"]
 
-    # 저장할 데이터
     data = {
         "nickname": nickname,
         "mood": mood,
@@ -116,7 +123,6 @@ def save_quote(nickname: str, mood: str):
         "date": datetime.now().strftime("%Y-%m-%d")
     }
 
-    # history.json에 저장
     try:
         with open("history.json", "r", encoding="utf-8") as f:
             history = json.load(f)
@@ -129,6 +135,12 @@ def save_quote(nickname: str, mood: str):
         json.dump(history, f, ensure_ascii=False, indent=2)
 
     return {"message": "저장 완료!", "data": data}
+
+
+
+
+
+
 
 @gpt_router.get("/history")
 def get_jistory(nickname: str):

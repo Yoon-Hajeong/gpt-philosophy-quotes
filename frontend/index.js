@@ -4,13 +4,14 @@ const output = document.querySelector("#quote-output");
 const nicknameInput = document.querySelector("#nickname-input");
 
 form.addEventListener("submit", async (e) => {
+  console.log("폼 제출 시작됨");
   e.preventDefault();
   const mood = input.value;
   const nickname = nicknameInput.value;
   output.innerText = "생각 중...🤔";
 
   try {
-    const res = await fetch("http://localhost:8010/chat/philosophy", {
+    const res = await fetch("http://localhost:8000/chat/philosophy", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -26,7 +27,7 @@ form.addEventListener("submit", async (e) => {
       <p><strong>🧠 한국어 명언:</strong><br>${korean}</p>
       <p><strong>🌍 영어 명언:</strong><br>${english}</p>
     `;
-    await fetch(`http://localhost:8010/save-quote?nickname=${encodeURIComponent(nickname)}&mood=${encodeURIComponent(mood)}`, {
+    await fetch(`http://localhost:8000/save-quote?nickname=${encodeURIComponent(nickname)}&mood=${encodeURIComponent(mood)}`, {
       method: "POST"
     });
 
@@ -47,7 +48,7 @@ document.querySelector("#load-history").addEventListener("click", async () => {
   output.innerHTML = "<li>불러오는 중...</li>";
 
   try {
-    const res = await fetch(`http://localhost:8010/history?nickname=${encodeURIComponent(nickname)}`);
+    const res = await fetch(`http://localhost:8000/history?nickname=${encodeURIComponent(nickname)}`);
     const data = await res.json();
 
     if (!data.quotes || data.quotes.length === 0) {
@@ -65,3 +66,9 @@ document.querySelector("#load-history").addEventListener("click", async () => {
     output.innerHTML = "<li>불러오기 실패 😢</li>";
   }
 });
+
+// window.addEventListener("beforeunload", (e) => {
+//   // 이 이벤트는 새로고침, 탭 닫기, 뒤로가기 모두에서 작동
+//   e.preventDefault();
+//   e.returnValue = ""; // 브라우저에서 기본 새로고침/이동 동작을 중단시킴
+// });
