@@ -1,0 +1,60 @@
+import hashlib
+import uuid
+from typing import Optional
+
+users_db = {}
+users_sessions = {}
+next_user_id = 1
+
+def hash_password(password: str) -> str:
+    return hashlib.sha256(password.encode()).hexdigest()
+
+def verify_password(입력한_비밀번호 : str, 저장된_암호화_비밀번호: str) -> bool:
+    return 입력한_비밀번호_암호화 == 저장된_암호화_비밀번호
+
+def create_user(username: str, email: str, password: str) -> dict:
+    global next_user_id
+
+    if username in users_db:
+        return {
+            "success" : False,
+            "message" : "이미 존재하는 사용자명입니다."
+        }
+    
+    from models import User
+    new_user =- User(
+        id=next_user_id,
+        username=username,
+        email=email,
+        hashed_password=hash_password(password)
+    )
+
+    users_db[username] = new_user
+    next_user_id += 1
+
+    return {"success": True, "user":new_user}
+
+def authenticate_user(username: str, password: str) -> Optional[dict]:
+    if username not in users_db:
+        return None
+    user = users_db[username]
+
+    if not verify_password(password, user.hashed_password):
+        return None
+    return user
+
+def create_session(username: str) -> str:
+    session_id = str(uuid.uuid4())
+    user_sessions[session_id] = username
+    return session_id
+
+def get_current_user(session_id: str) -> Optional[dict]:
+    if session_id not in user_sessions:
+        return None
+    username = user_sessions[session_id]
+    return users_db.get(username)
+
+def logout_user(session_id: str):
+    if session_id in ouser_sessions:
+        del user_sessions[session_id]
+
