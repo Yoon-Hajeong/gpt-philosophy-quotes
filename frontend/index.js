@@ -1,5 +1,3 @@
-console.log("JS 연결됨!");
-
 const form = document.querySelector("#mood-form");
 const input = document.querySelector("#mood-input");
 const output = document.querySelector("#quote-output");
@@ -7,6 +5,7 @@ const output = document.querySelector("#quote-output");
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
   const mood = input.value;
+  output.innerText = "생각 중...🤔";
 
   try {
     const res = await fetch("http://localhost:8000/chat/philosophy", {
@@ -18,10 +17,18 @@ form.addEventListener("submit", async (e) => {
     });
 
     const data = await res.json();
-    output.innerText = data.quote;
-    input.value = ""; // 입력창 초기화
+    const lines = data.quote.split("\n").filter(Boolean);
+    const [korean, english] = lines;
+
+    output.innerHTML = `
+      <p><strong>🧠 한국어 명언:</strong><br>${korean}</p>
+      <p><strong>🌍 영어 명언:</strong><br>${english}</p>
+    `;
   } catch (err) {
-    output.innerText = "에러가 발생했습니다.";
+    output.innerText = "에러가 발생했어요 😢";
     console.error(err);
   }
+
+  input.value = "";
+  input.focus();
 });

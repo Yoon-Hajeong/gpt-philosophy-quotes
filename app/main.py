@@ -10,7 +10,7 @@ app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # 또는 ["http://127.0.0.1:5500"]도 가능
+    allow_origins=["*"], 
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -29,7 +29,7 @@ def get_quote(data: MoodInput):
 
         {
             "role": "user",
-            "content": f"오늘 나는 '{data.mood}' 기분이야. 그 기분에 맞는 철학 명언을 한국어와 영어로 알려줘."
+            "content": f"오늘 나는 '{data.mood}' 기분이야. 그 기분에 맞는 철학 명언을 **첫 줄은 한국어, 두 번째 줄은 영어로만** 알려줘."
 
 
         }
