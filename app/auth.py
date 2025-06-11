@@ -3,14 +3,15 @@ import uuid
 from typing import Optional
 
 users_db = {}
-users_sessions = {}
+user_sessions = {}
 next_user_id = 1
 
 def hash_password(password: str) -> str:
     return hashlib.sha256(password.encode()).hexdigest()
 
-def verify_password(입력한_비밀번호 : str, 저장된_암호화_비밀번호: str) -> bool:
-    return 입력한_비밀번호_암호화 == 저장된_암호화_비밀번호
+def verify_password(entered_password : str, hashed_password: str) -> bool:
+    screened = hash_password(entered_password)
+    return screened == hashed_password
 
 def create_user(username: str, email: str, password: str) -> dict:
     global next_user_id
@@ -21,8 +22,8 @@ def create_user(username: str, email: str, password: str) -> dict:
             "message" : "이미 존재하는 사용자명입니다."
         }
     
-    from models import User
-    new_user =- User(
+    from .models import User
+    new_user = User(
         id=next_user_id,
         username=username,
         email=email,
@@ -55,6 +56,6 @@ def get_current_user(session_id: str) -> Optional[dict]:
     return users_db.get(username)
 
 def logout_user(session_id: str):
-    if session_id in ouser_sessions:
+    if session_id in user_sessions:
         del user_sessions[session_id]
 
