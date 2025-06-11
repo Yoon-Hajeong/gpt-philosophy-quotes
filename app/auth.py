@@ -58,4 +58,3 @@ def get_current_user(session_id: str) -> Optional[dict]:
 def logout_user(session_id: str):
     if session_id in user_sessions:
         del user_sessions[session_id]
-

@@ -1,8 +1,12 @@
+
+from datetime import datetime
+import json
 from fastapi import FastAPI, HTTPException, Cookie, APIRouter
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import Optional
+
 import requests
 
 # ================== 로그인 기능 영역 ==================
@@ -80,10 +84,73 @@ async def 전체사용자목록():
     }
 
 # ================== GPT 명언 기능 영역 ==================
+gpt_router = APIRouter()
+@gpt_router.post("/save-quote")
+def save_quote(nickname: str, mood: str):
+    # GPT에 보낼 메시지 구성
+    messages = [
+        {
+            "role": "system",
+            "content": "assistant는 감정에 맞는 철학자 명언을 한국어와 영어로 제공하는 지혜로운 철학자다."
+        },
+        {
+            "role": "user",
+            "content": f"오늘 나는 '{mood}' 기분이야. 그 기분에 맞는 철학 명언을 **첫 줄은 한국어, 두 번째 줄은 영어로만** 알려줘."
+        }
+    ]
+
+    # GPT API 요청
+    response = requests.post(
+        "https://dev.wenivops.co.kr/services/openai-api",
+        json=messages
+    )
+    result = response.json()
+    quote = result["choices"][0]["message"]["content"]
+
+    # 저장할 데이터
+    data = {
+        "nickname": nickname,
+        "mood": mood,
+        "quote": quote,
+        "date": datetime.now().strftime("%Y-%m-%d")
+    }
+
+    # history.json에 저장
+    try:
+        with open("history.json", "r", encoding="utf-8") as f:
+            history = json.load(f)
+    except:
+        history = []
+
+    history.append(data)
+
+    with open("history.json", "w", encoding="utf-8") as f:
+        json.dump(history, f, ensure_ascii=False, indent=2)
+
+    return {"message": "저장 완료!", "data": data}
+
+@gpt_router.get("/history")
+def get_jistory(nickname: str):
+    try:
+        with open("history.json", "r", encoding="utf-8") as f:
+            history = json.load(f)
+    except FileNotFoundError:
+        return {"message": "⛔ 아직 저장된 명언이 없습니다."}
+
+    user_history = [item for item in history if item["nickname"] == nickname]
+
+    if not user_history:
+        return {"message": f"'{nickname}' 닉네임으로 저장된 내역이 없습니다."}
+
+    return {
+        "nickname": nickname,
+        "count": len(user_history),
+        "quotes": user_history
+    }
+
+
 class MoodInput(BaseModel):
     mood: str
-
-gpt_router = APIRouter()
 
 @gpt_router.post("/chat/philosophy")
 def get_quote(data: MoodInput):
