@@ -7,6 +7,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import Optional
 
+import httpx
 import requests
 
 # ================== 로그인 기능 영역 ==================
@@ -153,7 +154,7 @@ class MoodInput(BaseModel):
     mood: str
 
 @gpt_router.post("/chat/philosophy")
-def get_quote(data: MoodInput):
+async def get_quote(data: MoodInput):
     messages = [
         {
             "role": "system",
@@ -164,16 +165,18 @@ def get_quote(data: MoodInput):
             "content": f"오늘 나는 '{data.mood}' 기분이야. 그 기분에 맞는 철학 명언을 **첫 줄은 한국어, 두 번째 줄은 영어로만** 알려줘."
         }
     ]
-    response = requests.post(
-    "https://dev.wenivops.co.kr/services/openai-api",
-    json=messages
-    )
 
-    result = response.json()
+    async with httpx.AsyncClient() as client:
+        response = await client.post(
+            "https://dev.wenivops.co.kr/services/openai-api",
+            json=messages,
+            timeout=30.0
+        )
+        result = response.json()
+
     return {
-    "quote": result["choices"][0]["message"]["content"]
+        "quote": result["choices"][0]["message"]["content"]
     }
-
 # ================== FastAPI 앱 정의 ==================
 app = FastAPI(title="로그인 + GPT 철학 명언 시스템")
 

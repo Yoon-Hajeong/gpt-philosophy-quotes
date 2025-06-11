@@ -46,5 +46,29 @@
     "mood": "기쁘다",
     "quote": "기쁨은 삶의 꽃이다.  \nJoy is the flower of life. - William James",
     "date": "2025-06-11"
+  },
+  {
+    "nickname": "바보",
+    "mood": "기쁘다",
+    "quote": "\"행복은 우리가 추구하는 가장 위대한 목표이다.\"  \n\"Happiness is the highest good that we seek.\" - 아리스토텔레스 (Aristotle)",
+    "date": "2025-06-11"
+  },
+  {
+    "nickname": "바보",
+    "mood": "힘들어",
+    "quote": "“고통은 삶의 일부이지만, 그 속에서 성장할 수 있다.”  \n\"Suffering is a part of life, but it is through it that we can grow.\"",
+    "date": "2025-06-11"
+  },
+  {
+    "nickname": "안녕",
+    "mood": "목아파",
+    "quote": "\"아픔은 삶의 일부이며, 그 속에서 우리는 성장한다.\"  \n\"Suffering is a part of life, and in it, we grow.\"",
+    "date": "2025-06-11"
+  },
+  {
+    "nickname": "안녕",
+    "mood": "지긋지긋해",
+    "quote": "“모든 것에는 끝이 있기 마련이다.”  \n\"Everything has an end.\" - Socrates",
+    "date": "2025-06-11"
   }
 ]
