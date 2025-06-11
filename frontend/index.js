@@ -8,7 +8,7 @@ form.addEventListener("submit", async (e) => {
   output.innerText = "생각 중...🤔";
 
   try {
-    const res = await fetch("http://localhost:8000/chat/philosophy", {
+    const res = await fetch("http://localhost:8010/chat/philosophy", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
