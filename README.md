@@ -34,13 +34,12 @@
 1. 사용자가 닉네임과 기분 입력  
 2. GPT API 요청 → 철학 명언 반환  
 3. 결과를 화면에 출력하고 닉네임 기준으로 저장  
-4. 저장된 채팅은 새로고침 시 localStorage로 복원 가능  
 
 ---
 
 ## 와이어프레임
 
-![와이어프레임 예시](와이어프레임-1.png)
+![alt text](와이어프레임-1.png)
 
 ---
 
@@ -116,34 +115,3 @@
 - GPT는 도우미일 뿐, 진짜 개발자는 **직접 문제를 해결할 수 있어야 한다**
 
 ---
-
-## 핵심 코드 요약 (`main.py` 중)
-
-```python
-@gpt_router.post("/save-quote")
-def save_quote(nickname: str, mood: str):
-    messages = [
-        {"role": "system", "content": "assistant는 감정에 맞는 철학자 명언을 한국어와 영어로 제공하는 지혜로운 철학자다."},
-        {"role": "user", "content": f"오늘 나는 '{mood}' 기분이야. 철학 명언을 **첫 줄은 한국어, 두 번째 줄은 영어로** 알려줘."}
-    ]
-    response = requests.post("https://dev.wenivops.co.kr/services/openai-api", json=messages)
-    quote = response.json()["choices"][0]["message"]["content"]
-
-    data = {
-        "nickname": nickname,
-        "mood": mood,
-        "quote": quote,
-        "date": datetime.now().strftime("%Y-%m-%d")
-    }
-
-    try:
-        with open("history.json", "r", encoding="utf-8") as f:
-            history = json.load(f)
-    except:
-        history = []
-
-    history.append(data)
-    with open("history.json", "w", encoding="utf-8") as f:
-        json.dump(history, f, ensure_ascii=False, indent=2)
-
-    return {"message": "저장 완료!", "data": data}
