@@ -1,19 +1,15 @@
-#새로고침 오류 방지용
-import asyncio 
-
+from datetime import datetime
+import json
 from fastapi import FastAPI, HTTPException, Cookie, APIRouter
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import Optional
-from datetime import datetime
-import json
 
 import httpx
 import requests
 
 # ================== 로그인 기능 영역 ==================
-# 로그인 기능 구현하려다 포기해서 주석처리하려 했다가 오류가 생겨서 살려둠
 from .models import UserCreate, UserLogin, UserResponse
 from .auth import create_user, authenticate_user, create_session, get_current_user, logout_user
 
@@ -90,10 +86,8 @@ async def 전체사용자목록():
 # ================== GPT 명언 기능 영역 ==================
 gpt_router = APIRouter()
 @gpt_router.post("/save-quote")
-async def save_quote(nickname: str, mood: str):
-    #새로고침 오류 눈속임 지연....
-    await asyncio.sleep(600)  # 10분 = 600초
-
+def save_quote(nickname: str, mood: str):
+    # GPT에 보낼 메시지 구성
     messages = [
         {
             "role": "system",
@@ -105,15 +99,15 @@ async def save_quote(nickname: str, mood: str):
         }
     ]
 
-    async with httpx.AsyncClient() as client:
-        response = await client.post(
-            "https://dev.wenivops.co.kr/services/openai-api",
-            json=messages,
-            timeout=30.0
-        )
-        result = response.json()
-        quote = result["choices"][0]["message"]["content"]
+    # GPT API 요청
+    response = requests.post(
+        "https://dev.wenivops.co.kr/services/openai-api",
+        json=messages
+    )
+    result = response.json()
+    quote = result["choices"][0]["message"]["content"]
 
+    # 저장할 데이터
     data = {
         "nickname": nickname,
         "mood": mood,
@@ -121,6 +115,7 @@ async def save_quote(nickname: str, mood: str):
         "date": datetime.now().strftime("%Y-%m-%d")
     }
 
+    # history.json에 저장
     try:
         with open("history.json", "r", encoding="utf-8") as f:
             history = json.load(f)
@@ -133,12 +128,6 @@ async def save_quote(nickname: str, mood: str):
         json.dump(history, f, ensure_ascii=False, indent=2)
 
     return {"message": "저장 완료!", "data": data}
-
-
-
-
-
-
 
 @gpt_router.get("/history")
 def get_jistory(nickname: str):
