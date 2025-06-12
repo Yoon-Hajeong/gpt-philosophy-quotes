@@ -1,6 +1,5 @@
-
-
-import asyncio
+#새로고침 오류 방지용
+import asyncio 
 
 from fastapi import FastAPI, HTTPException, Cookie, APIRouter
 from fastapi.responses import JSONResponse
@@ -14,6 +13,7 @@ import httpx
 import requests
 
 # ================== 로그인 기능 영역 ==================
+# 로그인 기능 구현하려다 포기해서 주석처리하려 했다가 오류가 생겨서 살려둠
 from .models import UserCreate, UserLogin, UserResponse
 from .auth import create_user, authenticate_user, create_session, get_current_user, logout_user
 
@@ -89,11 +89,9 @@ async def 전체사용자목록():
 
 # ================== GPT 명언 기능 영역 ==================
 gpt_router = APIRouter()
-import asyncio  # 맨 위에 추가
-
 @gpt_router.post("/save-quote")
 async def save_quote(nickname: str, mood: str):
-    # ✅ 딜레이 시작
+    #새로고침 오류 눈속임 지연....
     await asyncio.sleep(600)  # 10분 = 600초
 
     messages = [

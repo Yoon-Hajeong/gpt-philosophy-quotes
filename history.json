@@ -262,5 +262,59 @@
     "mood": "가슴이 아려온다",
     "quote": "\"상처는 우리의 존재를 증명해준다.\"  \n\"Wounds are proof of our existence.\"",
     "date": "2025-06-12"
+  },
+  {
+    "nickname": "토끼",
+    "mood": "가슴이 아려온다",
+    "quote": "\"아픔은 삶이 주는 가장 진정한 선물 중 하나이다.\"  \n\"Suffering is one of the truest gifts that life can give.\"",
+    "date": "2025-06-12"
+  },
+  {
+    "nickname": "성공",
+    "mood": "해방감",
+    "quote": "\"자유는 우리의 가장 큰 재산이다.\"  \n\"Freedom is our greatest treasure.\"",
+    "date": "2025-06-12"
+  },
+  {
+    "nickname": "안녕",
+    "mood": "기쁘다",
+    "quote": "\"인생은 기쁨의 연속이다.\"  \n\"Life is a series of joys.\" - Epicurus  ",
+    "date": "2025-06-12"
+  },
+  {
+    "nickname": "마지막",
+    "mood": "우울해",
+    "quote": "\"어둠 속에서도 빛을 찾으려는 노력이 중요하다.\"  \n\"It is important to strive to find light even in the darkness.\" - 플라톤",
+    "date": "2025-06-12"
+  },
+  {
+    "nickname": "바보",
+    "mood": "기쁘다",
+    "quote": "\"행복은 우리 마음속에 있는 것, 우리가 선택하는 것.\"  \n\"Happiness is something that resides within us, something we choose.\" - 아리스토텔레스  \n",
+    "date": "2025-06-12"
+  },
+  {
+    "nickname": "토끼",
+    "mood": "기쁘다",
+    "quote": "\"기쁨은 인생의 진정한 목적이다.\"  \n\"Happiness is the true purpose of life.\" - 아리스토텔레스  \n\"A joy shared is a joy doubled.\"  \n\"누군가와 나누는 기쁨은 두 배로 증가한다.\" - 조지 허버트",
+    "date": "2025-06-12"
+  },
+  {
+    "nickname": "안녕",
+    "mood": "기쁘다",
+    "quote": "\"기쁨은 삶의 아름다움이다.\"  \n\"Happiness is the beauty of life.\"  \n- 헨리 데이비드 소로 (Henry David Thoreau)",
+    "date": "2025-06-12"
+  },
+  {
+    "nickname": "바보",
+    "mood": "슬퍼",
+    "quote": "“슬픔은 삶의 일부이며, 그것을 통해 우리는 성장한다.”  \n\"Sorrow is a part of life, and through it, we grow.\"",
+    "date": "2025-06-12"
+  },
+  {
+    "nickname": "바보",
+    "mood": "슬퍼",
+    "quote": "\"슬픔은 우리가 성장하는 과정의 일부이다.\"  \n\"Sorrow is a part of the process of our growth.\"  \n",
+    "date": "2025-06-12"
   }
 ]
