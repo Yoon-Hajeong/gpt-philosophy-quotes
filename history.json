@@ -316,5 +316,23 @@
     "mood": "슬퍼",
     "quote": "\"슬픔은 우리가 성장하는 과정의 일부이다.\"  \n\"Sorrow is a part of the process of our growth.\"  \n",
     "date": "2025-06-12"
+  },
+  {
+    "nickname": "바보",
+    "mood": "가슴이 아려온다",
+    "quote": "\"아픔의 깊이를 알고 있는 자만이 진정한 기쁨을 느낄 수 있다.\"  \n\"Only those who know the depth of pain can truly feel joy.\"",
+    "date": "2025-06-12"
+  },
+  {
+    "nickname": "기분",
+    "mood": "졸리다",
+    "quote": "\"졸음은 우리의 영혼이 쉬고 싶어하는 순간이다.\"  \n\"Tiredness is when our soul longs for rest.\"",
+    "date": "2025-06-12"
+  },
+  {
+    "nickname": "기분",
+    "mood": "기쁘다",
+    "quote": "\"행복은 당신이 선택한 삶을 자유롭게 살아가는 것이다.\"  \n\"Happiness is the freedom to live the life you choose.\" - Thich Nhat Hanh",
+    "date": "2025-06-12"
   }
 ]

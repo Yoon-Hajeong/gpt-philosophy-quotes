@@ -36,19 +36,43 @@ form.addEventListener("submit", async (e) => {
       <p><strong>🌍 영어 명언:</strong><br>${english}</p>
     `;
 
-    // GPT 응답 끝난 다음에 비우기 (여기만!)
-    input.value = "";
-    nicknameInput.value = "";
-
-    // 콘솔 확인용
-    console.log("입력창 비웠음 ✅");
-
     await fetch(`http://localhost:8000/save-quote?nickname=${encodeURIComponent(nickname)}&mood=${encodeURIComponent(mood)}`, {
       method: "POST"
     });
 
+    // 기분만 초기화, 닉네임은 유지
+    input.value = "";
+    // nicknameInput.value = ""; // ← 지우지 않음
+    console.log("기분 입력창만 비웠음 ✅");
+
   } catch (err) {
     output.innerText = "에러가 발생했어요 😢";
     console.error(err);
+  }
+});
+
+document.querySelector("#load-history").addEventListener("click", async () => {
+  const nickname = document.querySelector("#history-nickname").value;
+  const output = document.querySelector("#history-output");
+
+  output.innerHTML = "<li>불러오는 중...</li>";
+
+  try {
+    const res = await fetch(`http://localhost:8000/history?nickname=${encodeURIComponent(nickname)}`);
+    const data = await res.json();
+
+    if (!data.quotes || data.quotes.length === 0) {
+      output.innerHTML = "<li>기록이 없습니다.</li>";
+      return;
+    }
+
+    output.innerHTML = "";
+    for (const item of data.quotes) {
+      const li = document.createElement("li");
+      li.innerText = `[${item.date}] ${item.mood} - ${item.quote.split("\n")[0]}`;
+      output.appendChild(li);
+    }
+  } catch (err) {
+    output.innerHTML = "<li>불러오기 실패 😢</li>";
   }
 });
